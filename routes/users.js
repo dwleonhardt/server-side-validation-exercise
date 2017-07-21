@@ -36,11 +36,17 @@ router.post('/' , (req, res, next) => {
     return next(err);
   }
 
-  if (!username || username.trim() === '') {
-    const err = new Error('Username must not be blank');
-    err.status = 400;
-
-    return next(err);
+  if (username) {
+    if (username.length < 6) {
+      const err = new Error('Username must not be blank');
+      err.status = 400;
+      return next(err);
+    }
+    else if (username.charAt(0) !== /^[A-Za-z][A-Za-z0-9]+$/) {
+      const err = new Error('Username must not be blank');
+      err.status = 400;
+    }
+    
   }
 
   function validateEmail(email) {
