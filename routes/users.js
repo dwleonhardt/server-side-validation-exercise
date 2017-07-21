@@ -37,7 +37,12 @@ router.post('/' , (req, res, next) => {
   }
 
   if (username) {
-    if (username.length < 6) {
+    if (username.search(/[.,#!$%&*;:{}=\-_`~()]/) > 0) {
+      const err = new Error('Username must not be blank');
+      err.status = 400;
+      return next(err);
+    }
+    else if (username.length < 6) {
       const err = new Error('Username must not be blank');
       err.status = 400;
       return next(err);
@@ -46,7 +51,7 @@ router.post('/' , (req, res, next) => {
       const err = new Error('Username must not be blank');
       err.status = 400;
     }
-    
+
   }
 
   function validateEmail(email) {
