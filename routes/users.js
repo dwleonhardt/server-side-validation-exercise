@@ -22,6 +22,53 @@ router.post('/' , (req, res, next) => {
   let email = req.body.users.email;
   let phone = req.body.users.phone;
 
+  if (!firstName || firstName.trim() === '') {
+    const err = new Error('First name must not be blank');
+    err.status = 400;
+
+    return next(err);
+  }
+
+  if (!lastName || lastName.trim() === '') {
+    const err = new Error('Last name must not be blank');
+    err.status = 400;
+
+    return next(err);
+  }
+
+  if (!username || username.trim() === '') {
+    const err = new Error('Username must not be blank');
+    err.status = 400;
+
+    return next(err);
+  }
+
+  function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
+  if (email) {
+    if(validateEmail(email)){
+    }
+    else{
+      const err = new Error('Email invalid');
+      err.status = 400;
+      return next(err);
+    }
+  }
+
+  if (phone) {
+
+    if (/^\d{10}$/.test(phone)) {
+
+    } else {
+    const err = new Error("Invalid number; must be ten digits")
+    err.status = 400;
+    return next(err);
+    }
+  }
+
   knex('users')
     .insert({
       firstname: firstName,
